@@ -9,7 +9,7 @@
 .history
 .lib/
 dist/*
-conf/application.conf
+src/main/resources/application.conf
 target/
 lib_managed/
 src_managed/
