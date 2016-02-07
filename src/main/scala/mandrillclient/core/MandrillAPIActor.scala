@@ -9,7 +9,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.pattern.PipeToSupport
 import akka.stream.ActorMaterializer
 import mandrillclient.api.{ErrorName, ErrorResponse, MandrillRequest}
-import mandrillclient.api.Users.Ping2Response
+import mandrillclient.api.Users.{Ping2, Ping2Response}
 import mandrillclient.core.MandrillAPIActor.Ping2
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
 import org.json4s.{native, DefaultFormats}
@@ -49,5 +49,4 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
 }
 
 object MandrillAPIActor {
-  case class Ping2(key: String) extends MandrillRequest
 }

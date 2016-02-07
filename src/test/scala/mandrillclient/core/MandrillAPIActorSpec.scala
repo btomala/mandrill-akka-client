@@ -5,7 +5,7 @@ import akka.pattern.AskSupport
 import akka.stream.ActorMaterializer
 import akka.testkit.{ImplicitSender, DefaultTimeout, TestKit}
 import mandrillclient.api.ErrorResponse
-import mandrillclient.api.Users.Ping2Response
+import mandrillclient.api.Users.{Ping2, Ping2Response}
 import mandrillclient.core.MandrillAPIActor.Ping2
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
