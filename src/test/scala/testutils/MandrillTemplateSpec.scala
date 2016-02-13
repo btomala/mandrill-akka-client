@@ -10,10 +10,12 @@ class MandrillTemplateSpec extends MandrillClientSpec {
     super.afterAll()
   }
 
+  val mandrillTags = Seq("mandrill-akka-http-integration-test")
+
   trait TestTemplate {
     val name = UUID.randomUUID().toString
     val code = "<h1>{{testTitle}}</h1>"
-    val addTemplate = AddTemplate(apiKey, name, settings.testEmail, "Tester", "Test", code = Some(code), text = None, Seq("mandrill-akka-http-integration-test"))
+    val addTemplate = AddTemplate(apiKey, name, settings.testEmail, "Tester", "Test", code = Some(code), text = None, mandrillTags)
     val t = apiActor ? addTemplate
   }
 
