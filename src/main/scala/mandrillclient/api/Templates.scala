@@ -3,9 +3,16 @@ package mandrillclient.api
 import org.joda.time.DateTime
 
 object Templates {
-  case class AddTemplate(template: Template)
-  case class UpdateTemplate(template: Template)
-  case class Template(key: String,
+  case class AddTemplate(key: String,
+                      name: String,
+                      from_email: String,
+                      from_name: String,
+                      subject: String,
+                      code: Option[String],
+                      text: Option[String],
+                      labels: Seq[String] = Seq(),
+                      publish: Boolean = false) extends MandrillRequest
+  case class UpdateTemplate(key: String,
                       name: String,
                       from_email: String,
                       from_name: String,
@@ -15,6 +22,7 @@ object Templates {
                       labels: Seq[String] = Seq(),
                       publish: Boolean = false) extends MandrillRequest
   case class Delete(key: String, name: String) extends MandrillRequest
+  case class Info(key: String, name: String) extends MandrillRequest
   case class TemplateResponse(slug: String,
                               name: String,
                               from_email: String,
