@@ -11,7 +11,7 @@ import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
 import mandrillclient.api.ErrorResponse
 import mandrillclient.api.Messages.{Send, SendResponse}
-import mandrillclient.api.Templates.{Delete, Add, TemplateResponse}
+import mandrillclient.api.Templates._
 import mandrillclient.api.Users.{Ping2, Ping2Response}
 import org.json4s.{Formats, native}
 
@@ -27,10 +27,13 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
 
   private val http = Http()
   private val logger = Logging(context.system, this)
+
+  //toDo move somewhere
   private val ping2Uri = Uri(settings.endpoint + settings.ping2)
   private val sendUri = Uri(settings.endpoint + settings.send)
   private val addTemplateUri = Uri(settings.endpoint + settings.addTemplate)
   private val deleteTemplateUri = Uri(settings.endpoint + settings.deleteTemplate)
+  private val updateTemplateUri = Uri(settings.endpoint + settings.updateTemplate)
 
   private def flatEitherCond[A, B](test: Boolean, right: => Future[B], left: => Future[A]): Future[Either[A, B]] =
   if (test) right.map(Right(_)) else left.map(Left(_))
@@ -52,8 +55,10 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
       makeRequest[Ping2, Ping2Response](m, ping2Uri).pipeTo(sender())
     case m: Send =>
       makeRequest[Send, SendResponse](m, sendUri).pipeTo(sender())
-    case m: Add =>
-      makeRequest[Add, TemplateResponse](m, addTemplateUri).pipeTo(sender())
+    case AddTemplate(template: Template) =>
+      makeRequest[Template, TemplateResponse](template, addTemplateUri).pipeTo(sender())
+    case UpdateTemplate(template: Template) =>
+      makeRequest[Template, TemplateResponse](template, updateTemplateUri).pipeTo(sender())
     case m: Delete =>
       makeRequest[Delete, TemplateResponse](m, deleteTemplateUri).pipeTo(sender())
   }

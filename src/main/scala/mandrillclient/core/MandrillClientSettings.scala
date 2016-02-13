@@ -15,6 +15,7 @@ trait MandrillClientSettings { self: Settings =>
   val send = self.config.getString(mandrill + ".api.messages.send")
   val addTemplate = self.config.getString(mandrill + ".api.templates.add")
   val deleteTemplate = self.config.getString(mandrill + ".api.templates.delete")
+  val updateTemplate = self.config.getString(mandrill + ".api.templates.update")
 
   lazy val testEmail = self.config.getString("test.email")
 }
