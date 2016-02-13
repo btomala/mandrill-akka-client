@@ -6,16 +6,14 @@ organization := "btomala"
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 
-resolvers += Resolver.bintrayRepo("btomala", "maven")
 resolvers += Resolver.bintrayRepo("hseeberger", "maven")
 
-lazy val `mandrill-akka-client` = (project in file(".")).enablePlugins(SbtTwirl, GitVersioning)
+lazy val `mandrill-akka-client` = (project in file(".")).enablePlugins(GitVersioning)
 
 val json4sV = "3.3.0"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-experimental"   % "2.0.3",
-  "com.typesafe.play" %% "twirl-api"                % "1.1.1",
   "de.heikoseeberger" %% "akka-http-json4s"         % "1.4.2",
   "org.json4s"        %% "json4s-native"            % json4sV,
   "org.json4s"        %% "json4s-ext"               % json4sV
