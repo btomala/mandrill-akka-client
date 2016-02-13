@@ -13,6 +13,8 @@ trait MandrillClientSettings { self: Settings =>
 
   val ping2 = self.config.getString(mandrill + ".api.users.ping2")
   val send = self.config.getString(mandrill + ".api.messages.send")
+  val addTemplate = self.config.getString(mandrill + ".api.templates.add")
+  val deleteTemplate = self.config.getString(mandrill + ".api.templates.delete")
 
   lazy val testEmail = self.config.getString("test.email")
 }

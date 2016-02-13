@@ -4,7 +4,8 @@ import akka.actor.{Props, ActorSystem}
 import akka.pattern.AskSupport
 import akka.stream.ActorMaterializer
 import akka.testkit.{ImplicitSender, DefaultTimeout, TestKit}
-import mandrillclient.api.ErrorResponse
+import mandrillclient.api.Templates.{Delete, TemplateResponse, Add}
+import mandrillclient.api.{JsonFormats, ErrorResponse}
 import mandrillclient.api.Messages.{SendResponse, SendTo, SendMessage, Send}
 import mandrillclient.api.Users.{Ping2, Ping2Response}
 import mandrillclient.api.constants.{ErrorName, SendStatus, SendToType}
@@ -23,7 +24,7 @@ class MandrillAPIActorSpec extends TestKit(ActorSystem("mandrill")) with Default
     val settings = new Settings with MandrillClientSettings
 
     val duration = 5 seconds
-    val apiActor = system.actorOf(Props(classOf[MandrillAPIActor], settings, system), "Test-MandrillAPIActor")
+    val apiActor = system.actorOf(Props(classOf[MandrillAPIActor], settings, system, JsonFormats.formats), "Test-MandrillAPIActor")
 
     "Mandrill api actor " when {
       "when receive 'Ping2' message with valid key" should {
@@ -51,6 +52,27 @@ class MandrillAPIActorSpec extends TestKit(ActorSystem("mandrill")) with Default
           println(response)
           response shouldBe a [Right[ErrorResponse, SendResponse]]
           response.right.value.status shouldBe SendStatus.sent
+        }
+      }
+      "when receive 'Add' message with valid key" should {
+        "respond with 'TemplateResponse' object" in {
+          val name = "Test template"
+          val responseInFuture = apiActor ? Add(settings.key, name, settings.testEmail, "Tester", "Test", code = Some("<h1>{{testTitle}}</h1><div>{{content}}</div>"), text = None, Seq("test", "template", "code"))
+          val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
+          println(response)
+          response shouldBe a [Right[ErrorResponse, TemplateResponse]]
+          response.right.value.name shouldBe name
+        }
+      }
+      //TODO should be dependent from previous test
+      "when receive 'Delete' message with valid key" should {
+        "respond with 'TemplateResponse' object" in {
+          val name = "Test template"
+          val responseInFuture = apiActor ? Delete(settings.key, name)
+          val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
+          println(response)
+          response shouldBe a [Right[ErrorResponse, TemplateResponse]]
+          response.right.value.name shouldBe name
         }
       }
     }
