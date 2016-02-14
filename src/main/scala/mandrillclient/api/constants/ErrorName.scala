@@ -8,8 +8,6 @@ object ErrorName extends Enumeration {
   val PaymentRequired = Value("PaymentRequired")
   /** The provided subaccount id does not exist. */
   val UnknownSubaccount = Value("Unknown_Subaccount")
-  /**  The provided message id does not exist */
-  val UnknownMessage = Value("Unknown_Message")
   /** The parameters passed to the API call are invalid or not provided when required */
   val ValidationError = Value("ValidationError")
   /** An unexpected error occurred processing the request. Mandrill developers will be notified. */
@@ -18,4 +16,6 @@ object ErrorName extends Enumeration {
   val  UnknownTemplate = Value("Unknown_Template") //5
   /** The given template name already exists or contains invalid characters */
   val InvalidTemplate = Value("Invalid_Template") //6 - A template with name "xxx" already exists
+  /**  The provided message id does not exist */
+  val UnknownMessage = Value("Unknown_Message") //11
 }

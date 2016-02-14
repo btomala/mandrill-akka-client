@@ -15,8 +15,10 @@ trait MandrillClientSettings { self: Settings =>
   val key = self.config.getString(mandrill + ".key")
 
   val ping2 = self.config.getString(mandrill + ".api.users.ping2")
+
   val send = self.config.getString(mandrillMessages + ".send")
   val sendTemplate = self.config.getString(mandrillMessages+ ".send-template")
+  val content = self.config.getString(mandrillMessages+ ".content")
 
   val addTemplate = self.config.getString(mandrillTemplates + ".add")
   val infoTemplate = self.config.getString(mandrillTemplates + ".info")

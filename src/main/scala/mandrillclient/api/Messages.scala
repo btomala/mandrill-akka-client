@@ -8,6 +8,7 @@ import mandrillclient.api.constants.SendToType.SendToType
 import scala.collection.immutable.HashMap
 
 object Messages {
+  case class Content(key: String, id: String) extends MandrillRequest
   case class Send(key: String,
                   message: SendMessage,
                   async: Boolean = true,
@@ -21,7 +22,20 @@ object Messages {
                           ip_pool: Option[String] = None,
                           sand_at: Option[String] = None) extends MandrillRequest
   case class SendResponse(email: String, status: SendStatus, _id: String, reject_reason: Option[RejectReason])
+  case class ContentResponse(ts: Integer,
+                             _id: String,
+                             from_email: String,
+                             from_name: Option[String],
+                             subject: String,
+                             to: Seq[Recipient],
+                             tags: Seq[String],
+                             headers: HashMap[String, String],
+                             text: Option[String],
+                             html: Option[String],
+                             attachments: Seq[SendFile]
+                            )
 
+  case class Recipient(email: String, name: Option[String])
   case class SendTo(email: String, name: String, `type`: SendToType)
 
   /**

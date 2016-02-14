@@ -1,5 +1,5 @@
 package mandrillclient.api
 
-trait MandrillRequest {
+private[api] trait MandrillRequest {
   val key: String
 }

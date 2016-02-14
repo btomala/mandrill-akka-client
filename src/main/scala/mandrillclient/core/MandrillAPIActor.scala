@@ -10,7 +10,7 @@ import akka.pattern.PipeToSupport
 import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
 import mandrillclient.api.ErrorResponse
-import mandrillclient.api.Messages.{SendTemplate, Send, SendResponse}
+import mandrillclient.api.Messages._
 import mandrillclient.api.Templates._
 import mandrillclient.api.Users.{Ping2, Ping2Response}
 import org.json4s.{Formats, native}
@@ -47,10 +47,14 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
   override def receive: Receive = {
     case m: Ping2 =>
       makeRequest[Ping2, Ping2Response](m, uri.ping2).pipeTo(sender())
+
     case m: Send =>
       makeRequest[Send, SendResponse](m, uri.send).pipeTo(sender())
     case m: SendTemplate =>
       makeRequest[SendTemplate, SendResponse](m, uri.sendTemplate).pipeTo(sender())
+    case m: Content =>
+      makeRequest[Content, ContentResponse](m, uri.content).pipeTo(sender())
+
     case m: AddTemplate =>
       makeRequest[AddTemplate, TemplateResponse](m, uri.addTemplate).pipeTo(sender())
     case m: Info =>

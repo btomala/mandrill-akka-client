@@ -11,7 +11,7 @@ class MandrillTemplateSpec extends MandrillClientSpec {
 
   val testMandrillLabel = "integration-test-" + suiteName
 
-  protected trait TestTemplate {
+  private[testutils] trait TestTemplate {
     val name: String
     val code = "<h1>{{testTitle}}</h1>"
     val addTemplate = AddTemplate(apiKey, name, settings.testEmail, "Tester", "Test", code = Some(code), text = None, Seq(testMandrillLabel))
