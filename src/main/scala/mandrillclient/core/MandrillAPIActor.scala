@@ -27,15 +27,7 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
 
   private val http = Http()
   private val logger = Logging(context.system, this)
-
-  //toDo move somewhere
-  private val ping2Uri = Uri(settings.endpoint + settings.ping2)
-  private val sendUri = Uri(settings.endpoint + settings.send)
-  private val sendTemplateUri = Uri(settings.endpoint + settings.sendTemplate)
-  private val addTemplateUri = Uri(settings.endpoint + settings.addTemplate)
-  private val updateTemplateUri = Uri(settings.endpoint + settings.updateTemplate)
-  private val deleteTemplateUri = Uri(settings.endpoint + settings.deleteTemplate)
-  private val listTemplateUri = Uri(settings.endpoint + settings.listTemplate)
+  private val uri = new MandrillUriBuilder(settings)
 
   private def flatEitherCond[A, B](test: Boolean, right: => Future[B], left: => Future[A]): Future[Either[A, B]] =
   if (test) right.map(Right(_)) else left.map(Left(_))
@@ -54,21 +46,21 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
 
   override def receive: Receive = {
     case m: Ping2 =>
-      makeRequest[Ping2, Ping2Response](m, ping2Uri).pipeTo(sender())
+      makeRequest[Ping2, Ping2Response](m, uri.ping2).pipeTo(sender())
     case m: Send =>
-      makeRequest[Send, SendResponse](m, sendUri).pipeTo(sender())
+      makeRequest[Send, SendResponse](m, uri.send).pipeTo(sender())
     case m: SendTemplate =>
-      makeRequest[SendTemplate, SendResponse](m, sendTemplateUri).pipeTo(sender())
+      makeRequest[SendTemplate, SendResponse](m, uri.sendTemplate).pipeTo(sender())
     case m: AddTemplate =>
-      makeRequest[AddTemplate, TemplateResponse](m, addTemplateUri).pipeTo(sender())
+      makeRequest[AddTemplate, TemplateResponse](m, uri.addTemplate).pipeTo(sender())
     case m: Info =>
-      makeRequest[Info, TemplateResponse](m, deleteTemplateUri).pipeTo(sender())
+      makeRequest[Info, TemplateResponse](m, uri.deleteTemplate).pipeTo(sender())
     case m: UpdateTemplate =>
-      makeRequest[UpdateTemplate, TemplateResponse](m, updateTemplateUri).pipeTo(sender())
+      makeRequest[UpdateTemplate, TemplateResponse](m, uri.updateTemplate).pipeTo(sender())
     case m: Delete =>
-      makeRequest[Delete, TemplateResponse](m, deleteTemplateUri).pipeTo(sender())
+      makeRequest[Delete, TemplateResponse](m, uri.deleteTemplate).pipeTo(sender())
     case m: List =>
-      makeRequest[List, Seq[TemplateResponse]](m, listTemplateUri).pipeTo(sender())
+      makeRequest[List, Seq[TemplateResponse]](m, uri.listTemplate).pipeTo(sender())
   }
 }
 
