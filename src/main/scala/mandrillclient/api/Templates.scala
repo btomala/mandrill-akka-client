@@ -23,6 +23,8 @@ object Templates {
                       publish: Boolean = false) extends MandrillRequest
   case class Delete(key: String, name: String) extends MandrillRequest
   case class Info(key: String, name: String) extends MandrillRequest
+  case class List(key: String, label: String) extends MandrillRequest
+
   case class TemplateResponse(slug: String,
                               name: String,
                               from_email: String,

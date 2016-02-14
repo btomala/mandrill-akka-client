@@ -15,9 +15,10 @@ trait MandrillClientSettings { self: Settings =>
   val ping2 = self.config.getString(mandrill + ".api.users.ping2")
   val send = self.config.getString(mandrill + ".api.messages.send")
   val addTemplate = self.config.getString(mandrillTemplates + ".add")
-  val deleteTemplate = self.config.getString(mandrillTemplates + ".delete")
-  val updateTemplate = self.config.getString(mandrillTemplates + ".update")
   val infoTemplate = self.config.getString(mandrillTemplates + ".info")
+  val updateTemplate = self.config.getString(mandrillTemplates + ".update")
+  val deleteTemplate = self.config.getString(mandrillTemplates + ".delete")
+  val listTemplate = self.config.getString(mandrillTemplates + ".list")
 
   lazy val testEmail = self.config.getString(mandrill + ".test.email")
   lazy val testKey = self.config.getString(mandrill + ".test.key")

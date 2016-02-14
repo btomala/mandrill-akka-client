@@ -14,7 +14,11 @@ class MandrillClientSpec extends TestKit(ActorSystem("mandrill")) with DefaultTi
 
   implicit val materializer = ActorMaterializer()
 
-  override def afterAll() = system.shutdown()
+  override def afterAll() = {
+    info.apply("shutdown actor system")
+    system.shutdown()
+    super.afterAll()
+  }
 
   val settings = new Settings with MandrillClientSettings
   val apiKey = settings.testKey
