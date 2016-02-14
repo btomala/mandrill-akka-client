@@ -9,7 +9,7 @@ import scala.concurrent.{Future, Await}
 
 class MandrillTemplateSpec extends MandrillClientSpec {
 
-  val testMandrillLabel = "mandrill-akka-http-integration-test"
+  val testMandrillLabel = "integration-test-" + suiteName
 
   protected trait TestTemplate {
     val name: String
