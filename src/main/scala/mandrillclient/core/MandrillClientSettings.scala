@@ -6,6 +6,7 @@ trait MandrillClientSettings { self: Settings =>
 
   private val mandrill = "mandrill"
   private val mandrillTemplates = mandrill + ".api.templates"
+  private lazy val mandrillTest = mandrill + ".test"
 
   self.config.checkValid(ConfigFactory.defaultReference(), mandrill)
 
@@ -20,6 +21,7 @@ trait MandrillClientSettings { self: Settings =>
   val deleteTemplate = self.config.getString(mandrillTemplates + ".delete")
   val listTemplate = self.config.getString(mandrillTemplates + ".list")
 
-  lazy val testEmail = self.config.getString(mandrill + ".test.email")
-  lazy val testKey = self.config.getString(mandrill + ".test.key")
+  lazy val testEmail = self.config.getString(mandrillTest + ".email")
+  lazy val testKey = self.config.getString(mandrillTest + ".key")
+  lazy val templatesClean = self.config.getBoolean(mandrillTest + ".templates.clean")
 }

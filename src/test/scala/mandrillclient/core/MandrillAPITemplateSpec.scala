@@ -5,7 +5,7 @@ import mandrillclient.api.Templates._
 import mandrillclient.api.constants.ErrorName
 import testutils.MandrillTemplateSpec
 
-import scala.concurrent.{Await}
+import scala.concurrent.Await
 
 class MandrillAPITemplateSpec extends MandrillTemplateSpec {
 
@@ -23,7 +23,7 @@ class MandrillAPITemplateSpec extends MandrillTemplateSpec {
       }
     }
     "when receive 'Info' message with valid key and name of template" should {
-      "fetch information about template" in withTemplate("info") { name =>
+      "fetch information about template" in withTemplate() { name =>
         val responseInFuture = apiActor ? Info(apiKey, name)
         val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
         response shouldBe a [Right[ErrorResponse, TemplateResponse]]
@@ -40,7 +40,7 @@ class MandrillAPITemplateSpec extends MandrillTemplateSpec {
       }
     }
     "when receive 'UpdateTemplate' message with valid key" should {
-      "respond with 'TemplateResponse' object" in withTemplate("update") { name =>
+      "respond with 'TemplateResponse' object" in withTemplate() { name =>
         val code = "<h1>{{testTitle}}</h1><div>{{content}}</div>"
         val updateTemplate = UpdateTemplate(apiKey, name, settings.testEmail, "Tester", "Test", code = Some(code), text = None, Seq(testMandrillLabel))
         val responseInFuture = apiActor ? updateTemplate
@@ -51,7 +51,7 @@ class MandrillAPITemplateSpec extends MandrillTemplateSpec {
       }
     }
     "when receive 'Delete' message with valid key" should {
-      "respond with 'TemplateResponse' object" in withTemplate("delete") { name =>
+      "respond with 'TemplateResponse' object" in withTemplate() { name =>
         val responseInFuture = apiActor ? Delete(apiKey, name)
         val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
         response shouldBe a [Right[ErrorResponse, TemplateResponse]]

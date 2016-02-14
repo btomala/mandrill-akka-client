@@ -24,21 +24,26 @@ class MandrillTemplateSpec extends MandrillClientSpec {
     t.map(_ => f(name))
   }
 
-  def cleanTemplates() = {
+  def cleanTemplates(after: => Unit) = {
     import system.dispatcher
     val responseInFuture = apiActor ? List(apiKey, testMandrillLabel)
     val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, Seq[TemplateResponse]]]
     response shouldBe a [Right[ErrorResponse, Seq[TemplateResponse]]]
     val list = response.right.value
-    val deleted = Await.result(Future.sequence(list.map(t => apiActor ? Delete(apiKey, t.name))), duration).asInstanceOf[Seq[Either[ErrorResponse, TemplateResponse]]]
-    deleted.foreach(p => p) //it is required to wait for execution
+    Future.sequence(list.map(t => apiActor ? Delete(apiKey, t.name))) map {
+      case deleted: Seq[Either[ErrorResponse, TemplateResponse]] => after
+    }
   }
 
   override def afterAll() = {
-    info.apply("remove template with label: " + testMandrillLabel)
-    cleanTemplates()
-    info.apply("templates are removed")
-    super.afterAll()
+    if(settings.templatesClean) {
+      info.apply("remove template with label: " + testMandrillLabel)
+      cleanTemplates(super.afterAll())
+      info.apply("templates are removed")
+    } else {
+      super.afterAll()
+    }
+
   }
 
 }
