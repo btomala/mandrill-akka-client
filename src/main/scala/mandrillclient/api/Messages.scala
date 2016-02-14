@@ -13,20 +13,33 @@ object Messages {
                   async: Boolean = true,
                   ip_pool: Option[String] = None,
                   sand_at: Option[String] = None) extends MandrillRequest
-  case class SendResponse(email: String, status: SendStatus, _id: String, reject_reason: RejectReason)
+  case class SendTemplate(key: String,
+                          template_name: String,
+                          message: SendMessage,
+                          template_content: Seq[EditableRegion] = Seq(),
+                          async: Boolean = true,
+                          ip_pool: Option[String] = None,
+                          sand_at: Option[String] = None) extends MandrillRequest
+  case class SendResponse(email: String, status: SendStatus, _id: String, reject_reason: Option[RejectReason])
 
   case class SendTo(email: String, name: String, `type`: SendToType)
+
+  /**
+    * @param name the name of the mc:edit editable region to inject into
+    * @param content the content to inject
+    */
+  case class EditableRegion(name: String, content: String)
   case class GlobalMargeVars(name: String, content: String)
   case class MargeVars(rcpt: String, vars: Seq[GlobalMargeVars])
   case class RecipientMetadata(rcpt: String, values: HashMap[String, Any])
   case class SendFile(`type`: String, name: String, content: String)
   case class SendMessage(
-                        html: Option[String],
-                        text: Option[String],
-                        subject: String,
-                        from_email: String,
-                        from_name: String,
                         to: Seq[SendTo],
+                        from_email: Option[String] = None,
+                        from_name: Option[String] = None,
+                        html: Option[String] = None,
+                        text: Option[String] = None,
+                        subject: Option[String] = None,
                         headers: HashMap[String, String] = HashMap(), //ex   "Reply-To"
                         important: Boolean = false,
                         track_opens: Boolean = false,

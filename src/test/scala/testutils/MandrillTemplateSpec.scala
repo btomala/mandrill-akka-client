@@ -24,7 +24,7 @@ class MandrillTemplateSpec extends MandrillClientSpec {
     t.map(_ => f(name))
   }
 
-  def cleanTemplates(after: => Unit) = {
+  private def cleanTemplates(after: => Unit) = {
     import system.dispatcher
     val responseInFuture = apiActor ? List(apiKey, testMandrillLabel)
     val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, Seq[TemplateResponse]]]

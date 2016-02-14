@@ -10,7 +10,7 @@ import akka.pattern.PipeToSupport
 import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
 import mandrillclient.api.ErrorResponse
-import mandrillclient.api.Messages.{Send, SendResponse}
+import mandrillclient.api.Messages.{SendTemplate, Send, SendResponse}
 import mandrillclient.api.Templates._
 import mandrillclient.api.Users.{Ping2, Ping2Response}
 import org.json4s.{Formats, native}
@@ -31,6 +31,7 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
   //toDo move somewhere
   private val ping2Uri = Uri(settings.endpoint + settings.ping2)
   private val sendUri = Uri(settings.endpoint + settings.send)
+  private val sendTemplateUri = Uri(settings.endpoint + settings.sendTemplate)
   private val addTemplateUri = Uri(settings.endpoint + settings.addTemplate)
   private val updateTemplateUri = Uri(settings.endpoint + settings.updateTemplate)
   private val deleteTemplateUri = Uri(settings.endpoint + settings.deleteTemplate)
@@ -56,6 +57,8 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
       makeRequest[Ping2, Ping2Response](m, ping2Uri).pipeTo(sender())
     case m: Send =>
       makeRequest[Send, SendResponse](m, sendUri).pipeTo(sender())
+    case m: SendTemplate =>
+      makeRequest[SendTemplate, SendResponse](m, sendTemplateUri).pipeTo(sender())
     case m: AddTemplate =>
       makeRequest[AddTemplate, TemplateResponse](m, addTemplateUri).pipeTo(sender())
     case m: Info =>
