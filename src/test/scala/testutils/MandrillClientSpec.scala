@@ -20,7 +20,7 @@ class MandrillClientSpec extends TestKit(ActorSystem("mandrill")) with DefaultTi
     super.afterAll()
   }
 
-  val settings = new Settings with MandrillClientSettings
+  val settings = new Settings with MandrillClientSettings with MandrillClientTestSettings
   val apiKey = settings.testKey
 
   val duration = 5 seconds
