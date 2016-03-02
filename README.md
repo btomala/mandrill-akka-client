@@ -1,5 +1,9 @@
 # mandrill-akka-client
-Mandrill Client build on top of Akka HTTP
+Mandrill Client build on top of Akka HTTP. 
+
+This project is not finished. I planed to use it in my project on university but mandrill remove all free acounts so I decided to abandon it. ([read more](http://blog.mailchimp.com/important-changes-to-mandrill/))
+
+For now you can send email, create webhoosk and manage template. The original plan was to create library wich can coexist as part of akka cluser (as microservice) or simple library in small projects. Feel free to use it.
 
 ## TESTING
 If you want to run tests:
