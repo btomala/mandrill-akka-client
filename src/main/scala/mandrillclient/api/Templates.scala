@@ -21,9 +21,9 @@ object Templates {
                       text: Option[String],
                       labels: Seq[String] = Seq(),
                       publish: Boolean = false) extends MandrillRequest
-  case class Delete(key: String, name: String) extends MandrillRequest
-  case class Info(key: String, name: String) extends MandrillRequest
-  case class List(key: String, label: String) extends MandrillRequest
+  case class DeleteTemplate(key: String, name: String) extends MandrillRequest
+  case class InfoTemplate(key: String, name: String) extends MandrillRequest
+  case class ListTemplate(key: String, label: String) extends MandrillRequest
 
   case class TemplateResponse(slug: String,
                               name: String,

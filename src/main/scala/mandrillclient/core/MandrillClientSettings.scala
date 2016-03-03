@@ -7,6 +7,7 @@ trait MandrillClientSettings { self: Settings =>
   private val mandrill = "mandrill"
   private val mandrillTemplates = mandrill + ".api.templates"
   private val mandrillMessages = mandrill + ".api.messages"
+  private val mandrillWebhook = mandrill + ".api.webhooks"
 
   self.config.checkValid(ConfigFactory.defaultReference(), mandrill)
 
@@ -25,4 +26,9 @@ trait MandrillClientSettings { self: Settings =>
   val updateTemplate = self.config.getString(mandrillTemplates + ".update")
   val deleteTemplate = self.config.getString(mandrillTemplates + ".delete")
   val listTemplate = self.config.getString(mandrillTemplates + ".list")
+
+  val addWebhook = self.config.getString(mandrillWebhook + ".add")
+  val infoWebhook = self.config.getString(mandrillWebhook + ".info")
+  val deleteWebhook = self.config.getString(mandrillWebhook + ".delete")
+  val listWebhook = self.config.getString(mandrillWebhook + ".list")
 }

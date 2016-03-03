@@ -9,6 +9,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.pattern.PipeToSupport
 import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpjson4s.Json4sSupport._
+import mandrillclient.api.Webhooks._
 import mandrillclient.api.ErrorResponse
 import mandrillclient.api.Messages._
 import mandrillclient.api.Templates._
@@ -57,14 +58,23 @@ class MandrillAPIActor(settings: MandrillClientSettings)(implicit system: ActorS
 
     case m: AddTemplate =>
       makeRequest[AddTemplate, TemplateResponse](m, uri.addTemplate).pipeTo(sender())
-    case m: Info =>
-      makeRequest[Info, TemplateResponse](m, uri.deleteTemplate).pipeTo(sender())
+    case m: InfoTemplate =>
+      makeRequest[InfoTemplate, TemplateResponse](m, uri.deleteTemplate).pipeTo(sender())
     case m: UpdateTemplate =>
       makeRequest[UpdateTemplate, TemplateResponse](m, uri.updateTemplate).pipeTo(sender())
-    case m: Delete =>
-      makeRequest[Delete, TemplateResponse](m, uri.deleteTemplate).pipeTo(sender())
-    case m: List =>
-      makeRequest[List, Seq[TemplateResponse]](m, uri.listTemplate).pipeTo(sender())
+    case m: DeleteTemplate =>
+      makeRequest[DeleteTemplate, TemplateResponse](m, uri.deleteTemplate).pipeTo(sender())
+    case m: ListTemplate =>
+      makeRequest[ListTemplate, Seq[TemplateResponse]](m, uri.listTemplate).pipeTo(sender())
+
+    case m: ListWebhook =>
+      makeRequest[ListWebhook, Seq[WebhookResponse]](m, uri.listWebhook).pipeTo(sender())
+    case m: AddWebhook =>
+      makeRequest[AddWebhook, WebhookResponse](m, uri.addWebhook).pipeTo(sender())
+    case m: DeleteWebhook =>
+      makeRequest[DeleteWebhook, WebhookResponse](m, uri.deleteWebhook).pipeTo(sender())
+    case m: InfoWebhook =>
+      makeRequest[InfoWebhook, WebhookResponse](m, uri.infoWebhook).pipeTo(sender())
   }
 }
 

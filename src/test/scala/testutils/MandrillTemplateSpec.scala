@@ -3,7 +3,7 @@ package testutils
 import java.util.UUID
 
 import mandrillclient.api.ErrorResponse
-import mandrillclient.api.Templates.{List, Delete, TemplateResponse, AddTemplate}
+import mandrillclient.api.Templates.{ListTemplate, DeleteTemplate, TemplateResponse, AddTemplate}
 
 import scala.concurrent.{Future, Await}
 
@@ -26,11 +26,11 @@ class MandrillTemplateSpec extends MandrillClientSpec {
 
   private def cleanTemplates(after: => Unit) = {
     import system.dispatcher
-    val responseInFuture = apiActor ? List(apiKey, testMandrillLabel)
+    val responseInFuture = apiActor ? ListTemplate(apiKey, testMandrillLabel)
     val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, Seq[TemplateResponse]]]
     response shouldBe a [Right[ErrorResponse, Seq[TemplateResponse]]]
     val list = response.right.value
-    Future.sequence(list.map(t => apiActor ? Delete(apiKey, t.name))) map {
+    Future.sequence(list.map(t => apiActor ? DeleteTemplate(apiKey, t.name))) map {
       case deleted: Seq[Either[ErrorResponse, TemplateResponse]] => after
     }
   }
@@ -43,7 +43,5 @@ class MandrillTemplateSpec extends MandrillClientSpec {
     } else {
       super.afterAll()
     }
-
   }
-
 }

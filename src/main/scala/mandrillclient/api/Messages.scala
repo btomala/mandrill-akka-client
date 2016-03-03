@@ -22,7 +22,7 @@ object Messages {
                           ip_pool: Option[String] = None,
                           sand_at: Option[String] = None) extends MandrillRequest
   case class SendResponse(email: String, status: SendStatus, _id: String, reject_reason: Option[RejectReason])
-  case class ContentResponse(ts: Integer,
+  case class ContentResponse(ts: Int,
                              _id: String,
                              from_email: String,
                              from_name: Option[String],

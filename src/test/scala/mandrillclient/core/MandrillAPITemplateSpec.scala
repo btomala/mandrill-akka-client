@@ -22,18 +22,18 @@ class MandrillAPITemplateSpec extends MandrillTemplateSpec {
         response.right.value.code.value shouldBe code
       }
     }
-    "when receive 'Info' message with valid key and name of template" should {
+    "when receive 'InfoTemplate' message with valid key and name of template" should {
       "fetch information about template" in withTemplate() { name =>
-        val responseInFuture = apiActor ? Info(apiKey, name)
+        val responseInFuture = apiActor ? InfoTemplate(apiKey, name)
         val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
         response shouldBe a [Right[ErrorResponse, TemplateResponse]]
         response.right.value.name shouldBe name
       }
     }
-    "when receive 'Info' message with valid key and not exist name of template" should {
+    "when receive 'InfoTemplate' message with valid key and not exist name of template" should {
       "respond with Unknown Template message" in {
         val name = "Info not exist test template"
-        val responseInFuture = apiActor ? Info(apiKey, name)
+        val responseInFuture = apiActor ? InfoTemplate(apiKey, name)
         val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
         response shouldBe a [Left[ErrorResponse, TemplateResponse]]
         response.left.value.name shouldBe ErrorName.UnknownTemplate
@@ -50,17 +50,17 @@ class MandrillAPITemplateSpec extends MandrillTemplateSpec {
         response.right.value.code.value shouldBe code
       }
     }
-    "when receive 'Delete' message with valid key" should {
+    "when receive 'DeleteTemplate' message with valid key" should {
       "respond with 'TemplateResponse' object" in withTemplate() { name =>
-        val responseInFuture = apiActor ? Delete(apiKey, name)
+        val responseInFuture = apiActor ? DeleteTemplate(apiKey, name)
         val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, TemplateResponse]]
         response shouldBe a [Right[ErrorResponse, TemplateResponse]]
         response.right.value.name shouldBe name
       }
     }
-    "when receive 'List' message with valid key" should {
+    "when receive 'ListTemplate' message with valid key" should {
       "respond with sequence of 'TemplateResponse' object" in withTemplate() { name =>
-        val responseInFuture = apiActor ? List(apiKey, testMandrillLabel)
+        val responseInFuture = apiActor ? ListTemplate(apiKey, testMandrillLabel)
         val response = Await.result(responseInFuture, duration).asInstanceOf[Either[ErrorResponse, Seq[TemplateResponse]]]
         response shouldBe a [Right[ErrorResponse, Seq[TemplateResponse]]]
         val list = response.right.value
